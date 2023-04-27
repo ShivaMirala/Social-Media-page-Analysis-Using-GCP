@@ -35,26 +35,41 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 #make sure to upload TTL_PAGE.XLS TO GOOGLE COLLAB via drag n drop to the furthest left column on screen
+
 df = pd.read_csv('TTL_PAGE.xls')
+
 print("These are the header columns we looking to transform and process ")
+
 print(df.columns)
+
 # Get the number of columns in the Dataframe
+
 num_columns = len(df.columns)
+
 print("Number of columns:", num_columns)
 
 pipe = beam.Pipeline()
 
 def filter_data(element):
+
   if element[10]:
+  
     return element
     
     with beam.Pipeline() as pipe1:
+    
   ip = ( pipe
+  
         |beam.io.ReadFromText("/content/TTL_PAGE.xls", skip_header_lines= True)
+        
         |beam.Map(lambda x:x.split(","))
+        
         |beam.Filter(filter_data)
+        
         #|beam.Combiners.Count.Globally()
+        
         |beam.Map(print)
+        
 )
 
 pipe.run()
@@ -68,8 +83,13 @@ df['Date'] = pd.to_datetime(df['Date'])
 df.sort_values(by='Date', inplace=True)
 
 # plot the trend of 'Lifetime Total Likes' over time
+
 plt.plot(df['Date'], df['Lifetime Total Likes'])
+
 plt.xlabel('Date')
+
 plt.ylabel('Lifetime Total Likes')
+
 plt.title('Trend of Lifetime Total Likes over time')
+
 plt.show()
