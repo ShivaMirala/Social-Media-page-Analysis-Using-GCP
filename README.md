@@ -52,24 +52,15 @@ pipe = beam.Pipeline()
 
 def filter_data(element):
 
-  if element[10]:
-  
-    return element
-    
-    with beam.Pipeline() as pipe1:
-    
-  ip = ( pipe
-  
-        |beam.io.ReadFromText("/content/TTL_PAGE.xls", skip_header_lines= True)
-        
-        |beam.Map(lambda x:x.split(","))
-        
-        |beam.Filter(filter_data)
-        
-        #|beam.Combiners.Count.Globally()
-        
-        |beam.Map(print)
-        
+  if element[10]:  
+    return element    
+    with beam.Pipeline() as pipe1:    
+  ip = ( pipe  
+        |beam.io.ReadFromText("/content/TTL_PAGE.xls", skip_header_lines= True)        
+        |beam.Map(lambda x:x.split(","))        
+        |beam.Filter(filter_data)        
+        #|beam.Combiners.Count.Globally()        
+        |beam.Map(print)        
 )
 
 pipe.run()
